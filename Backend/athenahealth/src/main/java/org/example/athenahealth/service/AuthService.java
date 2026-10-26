@@ -2,6 +2,7 @@ package org.example.athenahealth.service;
 
 
 import org.example.athenahealth.dto.LoginRequest;
+import org.example.athenahealth.dto.LoginResponse;
 import org.example.athenahealth.dto.RegisterRequest;
 import org.example.athenahealth.repository.DoctorRepository;
 import org.example.athenahealth.repository.PatientRepository;
@@ -79,23 +80,28 @@ public class AuthService {
         return "Registration successful";
     }
 
-    public String login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
 
         User user = userRepository
                 .findByUsername(request.getUsername())
                 .orElse(null);
 
         if (user == null) {
-            return "User not found";
+            throw new RuntimeException("User not found");
         }
 
         if (!passwordEncoder.matches(
                 request.getPassword(),
                 user.getPassword())) {
 
-            return "Invalid password";
+            throw new RuntimeException("Invalid password");
         }
 
-        return "Login successful. Role: " + user.getRole();
+        return new LoginResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getRole(),
+                "Login successful"
+        );
     }
 }

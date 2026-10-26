@@ -1,6 +1,7 @@
 package org.example.athenahealth.controller;
 
 import org.example.athenahealth.dto.LoginRequest;
+import org.example.athenahealth.dto.LoginResponse;
 import org.example.athenahealth.dto.RegisterRequest;
 import org.example.athenahealth.service.AuthService;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
+    public LoginResponse login(@RequestBody LoginRequest request) {
 
         return authService.login(request);
     }
